@@ -17,7 +17,7 @@ def save_text_to_docx(text, docx_filename):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index1.html')
 
 @app.route('/convert', methods=['POST'])
 def convert():
