@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Conversion</title>
+</head>
+<body>
+  <h2>PPT to Word Converter</h2>
+  <marquee>"USE ONLY PPTX"</marquee>
+  <form action="/convert" method=-data" enctype="multipart/form-data">
+    <input type="file" name="pptFile" accept=".ppt, .pptx">
+    <input type="submit" value="Upload">
+  </form>
+
+  <br>
+
+  <button id="downloadButton" style="display: none;">Download Word File</button>
+
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const response = await fetch('/convert', {
+        method: 'POST',
+        body: formData
+      });
+      if (response.ok) {
+        const downloadButton = document.getElementById('downloadButton');
+        downloadButton.style.display = 'inline-block';
+        downloadButton.addEventListener('click', async () => {
+          const downloadResponse = await fetch('/download');
+          const blob = await downloadResponse.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'converted.docx';
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
